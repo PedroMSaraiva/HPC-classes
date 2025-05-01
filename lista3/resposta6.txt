@@ -1,0 +1,174 @@
+Questão 6: Comparação entre Máquinas Paralelas com Memória Compartilhada e Distribuída
+
+As arquiteturas de computadores paralelos podem ser classificadas em duas categorias principais com base na organização da memória: sistemas de memória compartilhada e sistemas de memória distribuída. Cada abordagem apresenta características, vantagens e desvantagens distintas, adequando-se a diferentes tipos de aplicações e requisitos de escalabilidade.
+
+ARQUITETURAS DE MEMÓRIA COMPARTILHADA
+
+Em sistemas de memória compartilhada, múltiplos processadores têm acesso a um espaço de endereçamento global comum. Todos os processadores podem acessar qualquer posição de memória diretamente, sem a necessidade de comunicação explícita entre si.
+
+Características principais:
+1. Organização: Espaço de endereçamento único e global, acessível por todos os processadores
+2. Interconexão: Barramento compartilhado, crossbar switch, ou rede de interconexão
+3. Comunicação: Através de leitura e escrita em variáveis compartilhadas
+4. Sincronização: Primitivas como locks, semáforos, barreiras e variáveis de condição
+5. Tipos comuns: SMP (Symmetric Multiprocessors), NUMA (Non-Uniform Memory Access)
+
+VANTAGENS DA MEMÓRIA COMPARTILHADA:
+
+1. Modelo de programação mais intuitivo:
+   - Paradigma familiar para programadores (similar à programação sequencial)
+   - Comunicação implícita através de variáveis compartilhadas
+   - Menor curva de aprendizado para desenvolvedores
+
+2. Facilidade de compartilhamento de dados:
+   - Acesso direto a qualquer dado por qualquer processador
+   - Sem necessidade de duplicação explícita de dados
+   - Comunicação de baixa latência entre threads
+
+3. Balanceamento de carga dinâmico:
+   - Facilidade para implementar esquemas de balanceamento de carga em tempo de execução
+   - Threads podem acessar trabalho de uma fila compartilhada
+
+4. Menor overhead de memória:
+   - Dados compartilhados existem em uma única cópia
+   - Estruturas de dados não precisam ser particionadas ou duplicadas
+
+5. Suporte de linguagens e ferramentas maduras:
+   - APIs padronizadas como OpenMP, POSIX Threads
+   - Compiladores otimizados para explorar arquiteturas multicore
+   - Depuradores e ferramentas de análise de desempenho específicas
+
+DESVANTAGENS DA MEMÓRIA COMPARTILHADA:
+
+1. Limitações de escalabilidade:
+   - Gargalos no acesso à memória compartilhada à medida que o número de processadores aumenta
+   - Contenção no barramento ou na rede de interconexão
+   - Dificuldade em escalar além de algumas dezenas ou centenas de processadores
+
+2. Complexidade de sincronização:
+   - Necessidade de mecanismos para evitar condições de corrida
+   - Potencial para deadlocks e inconsistências de dados
+   - Performance pode ser degradada por contenção em locks
+
+3. Coerência de cache:
+   - Necessidade de protocolos complexos para manter a coerência
+   - Overhead de comunicação para manter caches coerentes
+   - Invalidações de cache podem degradar o desempenho
+
+4. Localidade de dados limitada:
+   - Em sistemas NUMA, acessos a memória remota podem ser significativamente mais lentos
+   - Dificuldade em otimizar a localidade de dados
+
+5. Custo elevado:
+   - Hardware especializado para grandes sistemas de memória compartilhada
+   - Tecnologias proprietárias para interconexão de alta velocidade
+
+ARQUITETURAS DE MEMÓRIA DISTRIBUÍDA
+
+Em sistemas de memória distribuída, cada processador possui sua própria memória local, inacessível diretamente por outros processadores. A comunicação entre processadores ocorre através de mensagens explícitas pela rede de interconexão.
+
+Características principais:
+1. Organização: Múltiplos espaços de endereçamento independentes
+2. Interconexão: Redes de interconexão como Ethernet, InfiniBand, ou topologias especializadas
+3. Comunicação: Troca explícita de mensagens entre processos
+4. Sincronização: Operações bloqueantes ou não-bloqueantes de envio e recepção
+5. Tipos comuns: Clusters, MPPs (Massively Parallel Processors), sistemas distribuídos
+
+VANTAGENS DA MEMÓRIA DISTRIBUÍDA:
+
+1. Escalabilidade superior:
+   - Pode escalar para milhares ou dezenas de milhares de processadores
+   - Ausência de contenção por memória compartilhada
+   - Cada nó opera independentemente com sua memória local
+
+2. Custo-benefício:
+   - Possibilidade de utilizar hardware commodity
+   - Expansão incremental do sistema
+   - Reaproveitamento de componentes existentes
+
+3. Localidade de dados explícita:
+   - Dados locais são acessados com baixa latência
+   - Programador tem controle explícito sobre a distribuição de dados
+   - Potencial para melhor desempenho em aplicações com boa localidade
+
+4. Ausência de problemas de coerência de cache:
+   - Não requer protocolos complexos de coerência
+   - Cada processador gerencia apenas seu cache local
+
+5. Tolerância a falhas:
+   - Falha em um nó não necessariamente compromete todo o sistema
+   - Possibilidade de implementar redundância e recuperação
+
+DESVANTAGENS DA MEMÓRIA DISTRIBUÍDA:
+
+1. Complexidade de programação:
+   - Necessidade de comunicação explícita entre processos
+   - Gerenciamento manual da distribuição de dados
+   - Maior esforço para particionar e distribuir algoritmos
+
+2. Sobrecarga de comunicação:
+   - Latência alta para comunicação entre nós
+   - Overhead associado à serialização e transferência de mensagens
+   - Desempenho sensível às características da rede
+
+3. Duplicação de dados:
+   - Frequentemente necessário replicar dados entre nós
+   - Maior utilização de memória para dados compartilhados
+   - Complexidade para manter a consistência entre cópias
+
+4. Balanceamento de carga desafiador:
+   - Necessidade de estratégias explícitas para distribuir o trabalho
+   - Dificuldade para rebalancear carga em tempo de execução
+   - Potencial para ineficiência devido a particionamento estático
+
+5. Depuração mais difícil:
+   - Comportamento não-determinístico devido à comunicação assíncrona
+   - Dificuldade para reproduzir condições de corrida
+   - Ferramentas de depuração menos maduras que para sistemas de memória compartilhada
+
+COMPARAÇÃO DIRETA EM ASPECTOS ESPECÍFICOS:
+
+1. Modelo de programação:
+   - Memória Compartilhada: Mais simples, baseado em threads e variáveis compartilhadas
+   - Memória Distribuída: Mais complexo, baseado em processos e troca de mensagens
+
+2. Comunicação:
+   - Memória Compartilhada: Implícita, através de leituras/escritas em memória compartilhada
+   - Memória Distribuída: Explícita, através de funções de envio e recepção de mensagens
+
+3. Escalabilidade:
+   - Memória Compartilhada: Limitada, geralmente até dezenas ou centenas de cores
+   - Memória Distribuída: Superior, podendo chegar a milhares ou milhões de cores
+
+4. Desempenho para acesso a dados locais:
+   - Memória Compartilhada: Excelente para dados em cache, bom para dados em memória
+   - Memória Distribuída: Excelente para dados locais, pobre para dados remotos
+
+5. Granularidade do paralelismo:
+   - Memória Compartilhada: Adequada para paralelismo de grão fino
+   - Memória Distribuída: Mais adequada para paralelismo de grão grosso
+
+6. Tolerância a falhas:
+   - Memória Compartilhada: Geralmente falha total do sistema se um componente crítico falhar
+   - Memória Distribuída: Pode continuar operando com nós funcionais após falhas isoladas
+
+7. Hardware:
+   - Memória Compartilhada: Geralmente mais caro, especialmente para grandes sistemas
+   - Memória Distribuída: Pode usar hardware commodity, melhor custo-benefício para grandes sistemas
+
+8. Bibliotecas e ferramentas:
+   - Memória Compartilhada: OpenMP, Pthreads, TBB
+   - Memória Distribuída: MPI, Charm++, PVM
+
+ARQUITETURAS HÍBRIDAS
+
+Com a evolução da computação de alto desempenho, sistemas híbridos que combinam características de ambas as abordagens tornaram-se comuns:
+
+1. Clusters de nós multicore: Memória distribuída entre nós, compartilhada dentro de cada nó
+2. Paradigma de programação híbrido: MPI para comunicação entre nós, OpenMP para paralelismo dentro do nó
+3. Sistemas com aceleradores: CPUs com memória compartilhada coordenando GPUs ou outros aceleradores
+4. SMP distribuído: Sistemas NUMA de grande escala com características de ambas as arquiteturas
+
+CONCLUSÃO
+
+A escolha entre arquiteturas de memória compartilhada e distribuída depende de vários fatores, incluindo requisitos de escalabilidade, características da aplicação, considerações de custo e expertise de programação disponível. Sistemas de memória compartilhada são geralmente mais adequados para aplicações de escala moderada que necessitam de comunicação frequente entre threads, enquanto sistemas de memória distribuída são preferíveis para aplicações de grande escala com boa localidade de dados e comunicação limitada. As arquiteturas híbridas modernas buscam capturar os benefícios de ambas as abordagens, oferecendo flexibilidade para diferentes tipos de paralelismo. 

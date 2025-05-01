@@ -1,0 +1,40 @@
+Questão 3: Impacto de Comandos if em Kernels CUDA
+
+Divergência de Controle em Warps
+
+Em CUDA, um warp é composto por 32 threads que executam a mesma instrução. Divergência ocorre quando threads de um warp seguem caminhos diferentes devido a condicionais, impactando o desempenho.
+
+Mecanismo de Divergência
+
+1. Em um if-else, o hardware executa primeiro o caminho 'then' e depois o 'else', desativando threads conforme necessário.
+2. O desempenho é afetado pela soma dos tempos de execução dos caminhos divergentes.
+
+Fatores de Impacto
+
+1. Número de threads divergentes: Idealmente, todas seguem o mesmo caminho.
+2. Complexidade dos caminhos: Caminhos longos aumentam o tempo ocioso.
+3. Padrão de divergência: Estruturada (mesmo caminho) ou aleatória (diferentes caminhos).
+
+Exemplos de Cenários
+
+1. Divergência por ID de thread: Threads pares e ímpares seguem caminhos diferentes.
+2. Divergência por dados: Baseada no conteúdo dos dados.
+3. Múltiplos caminhos: Uso de switch para diferentes caminhos.
+
+Mitigação
+
+1. Reestruturar código para minimizar condicionais.
+2. Ordenar dados para padrões uniformes.
+3. Dividir kernels para lógicas diferentes.
+4. Computação redundante pode ser mais rápida que divergência.
+5. Alinhar controle com warps inteiros.
+
+Casos Aceitáveis de Uso de If
+
+1. Verificação de limites: Sem penalidade se todos threads estão dentro ou fora.
+2. Condições uniformes por warp: Evita divergência.
+3. Condições raras: Impacto mínimo se raramente ocorrem.
+
+Conclusão
+
+Comandos if podem impactar o desempenho em CUDA devido à divergência de warps. Minimizar divergência e otimizar o fluxo de controle são cruciais para melhorar o desempenho dos kernels CUDA.

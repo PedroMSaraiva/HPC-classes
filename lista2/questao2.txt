@@ -1,0 +1,27 @@
+Questão 2: Organização de Threads, Blocos e Grids em CUDA
+
+CUDA organiza threads em uma hierarquia de três níveis: threads, blocos e grids, permitindo escalabilidade em GPUs.
+
+1. THREADS
+   * Unidade básica de execução
+   * Executa o mesmo kernel com índices diferentes
+   * Identificado por threadIdx
+
+2. BLOCOS
+   * Grupo de threads que compartilham memória e sincronização
+   * Identificado por blockIdx
+   * Executado em um único SM
+
+3. GRID
+   * Coleção de blocos executando o mesmo kernel
+   * Definido por gridDim e blockDim
+
+INDEXAÇÃO DE THREADS
+* threadIdx e blockIdx identificam threads e blocos
+* Cálculo de índice global: `global_idx = blockIdx.x * blockDim.x + threadIdx.x`
+
+DIMENSIONAMENTO
+* Blocos devem ser múltiplos de 32 (warp size)
+* Escolha de 1D, 2D ou 3D conforme a aplicação
+
+EXEMPLO DE CÓDIGO

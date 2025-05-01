@@ -1,0 +1,65 @@
+Questão 1: Características e Vantagens dos Multiprocessadores Simétricos (SMP)
+
+CARACTERÍSTICAS PRINCIPAIS DOS MULTIPROCESSADORES SIMÉTRICOS (SMP):
+
+1. Arquitetura compartilhada:
+   - Múltiplos processadores idênticos (homogêneos) conectados a uma única memória principal compartilhada
+   - Todos os processadores têm acesso igual à memória e dispositivos de E/S
+   - Tempo de acesso à memória uniforme para todos os processadores (arquitetura UMA - Uniform Memory Access)
+
+2. Organização do hardware:
+   - Processadores idênticos em termos de arquitetura, desempenho e capacidades
+   - Barramento ou comutador (switch) comum para interligar os processadores à memória
+   - Hierarquia de cache para reduzir a contenção no acesso à memória compartilhada
+   - Sistema de interconexão que permite que qualquer processador acesse qualquer módulo de memória
+
+3. Modelo de programação:
+   - Compartilhamento global do espaço de endereçamento
+   - Comunicação entre processos através de variáveis compartilhadas
+   - Mecanismos de sincronização para coordenar acesso a recursos compartilhados
+
+4. Sistema operacional:
+   - Um único sistema operacional gerencia todos os processadores
+   - Balanceamento de carga entre os processadores
+   - Escalonamento global de processos e threads
+
+5. Escalabilidade:
+   - Geralmente limitada a dezenas de processadores (tipicamente 2-32)
+   - Gargalos de desempenho surgem devido à contenção no barramento à medida que o número de processadores aumenta
+
+VANTAGENS POTENCIAIS DOS SMPs EM COMPARAÇÃO COM UNIPROCESSADORES:
+
+1. Desempenho e throughput aumentados:
+   - Capacidade de executar múltiplas tarefas simultaneamente
+   - Redução do tempo de resposta para cargas de trabalho paralelas
+   - Maior throughput para múltiplas aplicações independentes
+
+2. Compartilhamento eficiente de recursos:
+   - Hardware compartilhado (memória, dispositivos de E/S, interfaces de rede)
+   - Melhor utilização dos recursos do sistema
+   - Economia em termos de custo de hardware por unidade de desempenho
+
+3. Escalabilidade incremental:
+   - Possibilidade de adicionar processadores conforme necessário
+   - Upgrade mais simples em comparação com substituir um único processador por um mais potente
+   - Investimento gradual em capacidade de processamento
+
+4. Alta disponibilidade:
+   - Tolerância parcial a falhas (se um processador falhar, o sistema pode continuar funcionando)
+   - Possibilidade de realizar manutenção em um processador enquanto os outros continuam operando
+
+5. Menor latência de comunicação:
+   - Comunicação entre processos mais rápida via memória compartilhada
+   - Eliminação da necessidade de protocolos complexos de comunicação via rede
+
+6. Facilidade de programação:
+   - Modelo de programação mais simples que sistemas distribuídos
+   - Paradigma familiar de memória compartilhada
+   - Suporte para APIs padronizadas como OpenMP e POSIX Threads
+
+7. Ambiente unificado:
+   - Imagem única do sistema operacional
+   - Administração centralizada
+   - Visão consistente dos recursos do sistema
+
+Os SMPs oferecem um compromisso entre a simplicidade dos sistemas uniprocessados e o potencial de paralelismo dos sistemas distribuídos em grande escala, constituindo uma solução eficaz para muitas aplicações comerciais, científicas e de servidores. 

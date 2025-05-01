@@ -1,0 +1,1 @@
+Sucesso! Todos os valores são iguais: 999

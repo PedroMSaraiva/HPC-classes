@@ -1,0 +1,230 @@
+Questão 8: Particionamento por Decomposição Funcional e Decomposição de Domínio
+
+O particionamento é a primeira etapa na metodologia de desenvolvimento de algoritmos paralelos proposta por Ian Foster. Esta etapa consiste em dividir o problema em unidades computacionais menores que possam ser executadas em paralelo. Existem duas abordagens principais para realizar o particionamento: a decomposição funcional (paralelismo de tarefas) e a decomposição de domínio (paralelismo de dados). Cada uma dessas abordagens possui características, vantagens e aplicabilidades distintas.
+
+DECOMPOSIÇÃO FUNCIONAL (PARALELISMO DE TAREFAS)
+
+A decomposição funcional, também conhecida como paralelismo de tarefas, foca na divisão da computação em diferentes funções ou operações que podem ser realizadas simultaneamente.
+
+PRINCÍPIOS DA DECOMPOSIÇÃO FUNCIONAL:
+
+1. Divisão baseada em operações:
+   - O problema é divido em diferentes operações ou funções a serem executadas
+   - Cada tarefa representa uma função diferente aplicada potencialmente a todo o conjunto de dados
+   - O foco está na diferença entre as operações realizadas, não nos dados processados
+   - Análise do fluxo de trabalho para identificar etapas que podem ser executadas em paralelo
+
+2. Identificação de dependências funcionais:
+   - Análise das relações de dependência entre diferentes funções
+   - Construção de grafos de precedência para representar o fluxo de execução
+   - Identificação de caminhos críticos e oportunidades de paralelismo
+   - Ordenação parcial das tarefas com base nas dependências
+
+3. Granularidade da função:
+   - Determinação do nível adequado de detalhamento funcional
+   - Consideração do custo computacional de cada função
+   - Balanceamento entre sobrecarga de gerenciamento e paralelismo potencial
+   - Decomposição hierárquica de funções complexas quando necessário
+
+TÉCNICAS DE DECOMPOSIÇÃO FUNCIONAL:
+
+1. Paralelismo de pipeline:
+   - Divisão do processo em estágios sequenciais
+   - Diferentes estágios processam diferentes dados simultaneamente
+   - Cada dado passa sequencialmente pelos estágios do pipeline
+   - Exemplo: Processamento de vídeo com estágios de captura, filtro, análise e exibição
+
+2. Paralelismo mestre-escravo:
+   - Um processo mestre distribui tarefas para processos escravos
+   - Escravos executam funções específicas e retornam resultados ao mestre
+   - Mestre coordena o trabalho global e integra resultados parciais
+   - Exemplo: Servidor distribuindo solicitações para workers processarem
+
+3. Divisão por especialização:
+   - Tarefas são atribuídas a processadores especializados em determinadas operações
+   - Cada processador é otimizado para uma função específica
+   - Exploração de hardware especializado (GPUs, TPUs, FPGAs)
+   - Exemplo: Cálculos de física em CPU e renderização gráfica em GPU
+
+4. Decomposição recursiva por tarefas:
+   - Divisão recursiva do problema em subproblemas independentes
+   - Construção de árvores de tarefas com relações de dependência
+   - Algoritmos divide-and-conquer adaptados para execução paralela
+   - Exemplo: Algoritmo Mergesort paralelo
+
+EXEMPLOS DE APLICAÇÕES DE DECOMPOSIÇÃO FUNCIONAL:
+
+1. Processamento de imagem e vídeo:
+   - Diferentes operações (filtros, transformações, análises) aplicadas sequencialmente
+   - Cada operação pode ser executada por uma unidade de processamento diferente
+   - Organização em pipeline para maximizar throughput
+
+2. Compiladores:
+   - Análise léxica, sintática, semântica, otimização e geração de código
+   - Cada fase pode ser paralelizada e executada por diferentes threads ou processos
+   - Suporte para compilação incremental e modular
+
+3. Simulações científicas:
+   - Diferentes aspectos físicos (fluidos, estruturas, temperatura) calculados em paralelo
+   - Integração periódica de resultados parciais
+   - Modelos multi-física com diferentes solvers para cada fenômeno
+
+VANTAGENS E LIMITAÇÕES:
+
+Vantagens:
+- Adequação natural para problemas heterogêneos
+- Exploração de hardware especializado
+- Possibilidade de balanceamento dinâmico de carga
+- Escalabilidade com o aumento da complexidade do problema
+
+Limitações:
+- Dependências entre funções podem limitar o paralelismo
+- Complexidade de coordenação e comunicação
+- Potencial para desbalanceamento de carga
+- Maior complexidade de implementação e depuração
+
+DECOMPOSIÇÃO DE DOMÍNIO (PARALELISMO DE DADOS)
+
+A decomposição de domínio, ou paralelismo de dados, foca na divisão do conjunto de dados em subconjuntos que podem ser processados simultaneamente pela mesma operação ou conjunto de operações.
+
+PRINCÍPIOS DA DECOMPOSIÇÃO DE DOMÍNIO:
+
+1. Divisão baseada em dados:
+   - O conjunto de dados é dividido em partições menores
+   - A mesma operação é aplicada a cada partição simultaneamente
+   - O foco está na distribuição dos dados, não na diversidade de operações
+   - Análise da estrutura dos dados para determinar particionamento eficiente
+
+2. Independência de dados:
+   - Identificação de dependências entre elementos de dados
+   - Minimização da comunicação entre partições
+   - Análise de padrões de acesso para otimizar a localidade
+   - Estabelecimento de regiões de fronteira e estratégias de sincronização
+
+3. Granularidade da partição:
+   - Determinação do tamanho adequado para cada partição
+   - Consideração do overhead de comunicação versus paralelismo
+   - Balanceamento da carga computacional entre partições
+   - Adaptação à arquitetura e hierarquia de memória disponível
+
+TÉCNICAS DE DECOMPOSIÇÃO DE DOMÍNIO:
+
+1. Particionamento por blocos:
+   - Divisão do conjunto de dados em blocos contíguos e regulares
+   - Divisão 1D (vetores), 2D (matrizes), 3D (volumes) ou n-dimensional
+   - Cada processador recebe um ou mais blocos
+   - Exemplo: Dividir uma matriz em blocos quadrados para processamento paralelo
+
+2. Particionamento cíclico:
+   - Distribuição intercalada de elementos de dados
+   - Elementos são atribuídos ciclicamente aos processadores
+   - Útil para balancear cargas de trabalho irregulares
+   - Exemplo: Atribuir linhas de uma matriz alternadamente a diferentes processadores
+
+3. Particionamento adaptativo:
+   - Ajuste dinâmico da distribuição de dados baseado na carga computacional
+   - Reagrupamento de partições durante a execução
+   - Uso de estruturas de dados hierárquicas (quadtrees, octrees)
+   - Exemplo: Refinamento adaptativo de malha em simulações físicas
+
+4. Particionamento geométrico:
+   - Baseado na localidade espacial dos dados
+   - Divisão do espaço em regiões (fatias, caixas, setores)
+   - Atribuição de objetos ou elementos a processadores com base na localização
+   - Exemplo: Divisão espacial em simulações de n-corpos ou renderização 3D
+
+EXEMPLOS DE APLICAÇÕES DE DECOMPOSIÇÃO DE DOMÍNIO:
+
+1. Álgebra linear:
+   - Operações matriciais como multiplicação, decomposição, inversão
+   - Cada processador trabalha com sub-matrizes
+   - Paralelização de algoritmos iterativos para sistemas lineares
+
+2. Simulações baseadas em malha:
+   - Dinâmica de fluidos computacional
+   - Análise de elementos finitos
+   - Processamento de imagens e visão computacional
+   - Cada processador responsável por uma região da malha
+
+3. Algoritmos de busca e otimização:
+   - Busca em espaços de estados distribuídos
+   - Algoritmos genéticos e evolutivos paralelos
+   - Otimização por enxame de partículas
+   - Cada processador explora uma região diferente do espaço de busca
+
+VANTAGENS E LIMITAÇÕES:
+
+Vantagens:
+- Paralelismo de dados massivo e regular
+- Escalabilidade com o aumento do tamanho dos dados
+- Modelo de programação mais simples e uniforme
+- Aproveitamento de arquiteturas SIMD e vetoriais
+
+Limitações:
+- Dependências de dados podem exigir sincronização frequente
+- Comunicação nas fronteiras entre partições
+- Desafios de balanceamento para trabalhos irregulares
+- Sobrecarga de comunicação em problemas com alto acoplamento
+
+COMPARAÇÃO ENTRE AS ABORDAGENS
+
+| Aspecto | Decomposição Funcional | Decomposição de Domínio |
+|---------|------------------------|-------------------------|
+| Foco | Diversidade de operações | Distribuição de dados |
+| Granularidade | Tipicamente mais grossa | Tipicamente mais fina |
+| Escalabilidade | Com complexidade do problema | Com tamanho dos dados |
+| Comunicação | Entre funções, geralmente assíncrona | Nas fronteiras, frequentemente síncrona |
+| Balanceamento | Baseado no custo das funções | Baseado na distribuição dos dados |
+| Arquiteturas favorecidas | MIMD, heterogêneas | SIMD, homogêneas |
+| Implementação | Geralmente mais complexa | Geralmente mais regular |
+| Depuração | Mais desafiadora | Relativamente mais simples |
+
+ABORDAGENS HÍBRIDAS
+
+Na prática, muitos problemas complexos beneficiam-se de abordagens híbridas que combinam decomposição funcional e de domínio:
+
+1. Hierarquia de paralelismo:
+   - Decomposição funcional no nível superior
+   - Decomposição de domínio dentro de cada função
+   - Exemplo: Simulação multi-física onde cada fenômeno é uma função, e dentro de cada função os dados são particionados
+
+2. Paralelismo aninhado:
+   - Paralelismo de tarefas entre nós computacionais
+   - Paralelismo de dados dentro de cada nó
+   - Exemplo: MPI entre máquinas para decomposição funcional, OpenMP dentro de cada máquina para paralelismo de dados
+
+3. Adaptação à hierarquia de hardware:
+   - Correspondência entre tipos de paralelismo e níveis de hardware
+   - Exemplo: Decomposição funcional entre CPUs e GPUs, decomposição de domínio dentro de cada GPU
+
+CONSIDERAÇÕES PARA ESCOLHA DA ABORDAGEM
+
+A seleção entre decomposição funcional e de domínio depende de diversos fatores:
+
+1. Natureza do problema:
+   - Heterogeneidade das operações necessárias
+   - Estrutura e dependências dos dados
+   - Requisitos de comunicação
+
+2. Arquitetura alvo:
+   - Homogeneidade dos processadores
+   - Topologia da rede de interconexão
+   - Hierarquia de memória
+
+3. Requisitos de desempenho:
+   - Escalabilidade desejada
+   - Tolerância a latência
+   - Requisitos de balanceamento de carga
+
+4. Considerações práticas:
+   - Expertise da equipe
+   - Ferramentas e bibliotecas disponíveis
+   - Restrições de tempo de desenvolvimento
+
+CONCLUSÃO
+
+O particionamento é uma etapa fundamental no desenvolvimento de algoritmos paralelos, estabelecendo a base para o paralelismo explorado nas etapas subsequentes. A decomposição funcional (paralelismo de tarefas) e a decomposição de domínio (paralelismo de dados) representam abordagens complementares, cada uma com suas vantagens e limitações.
+
+A decomposição funcional é particularmente adequada para problemas com operações heterogêneas e arquiteturas diversificadas, enquanto a decomposição de domínio destaca-se em problemas com grandes volumes de dados homogêneos. A escolha entre estas abordagens, ou a combinação de ambas em estratégias híbridas, deve ser guiada pelas características específicas do problema, da arquitetura alvo e dos requisitos de desempenho.
+
+Em última análise, um particionamento eficiente deve expor o máximo de paralelismo potencial, minimizar dependências e comunicação, e proporcionar uma base sólida para as etapas de comunicação, aglomeração e mapeamento que se seguem na metodologia de Foster. 

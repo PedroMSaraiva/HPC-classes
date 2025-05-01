@@ -1,0 +1,22 @@
+Questão 1: Processadores de Fluxo (SP) e Espaços de Memória em GPGPU
+
+PROCESSADORES DE FLUXO (SP)
+- SPs são unidades básicas de processamento em GPUs, também chamadas de CUDA cores.
+- Executam operações aritméticas em paralelo com alto throughput.
+- Organizados em Streaming Multiprocessors (SM), compartilham recursos e executam instruções SIMT.
+
+HIERARQUIA DE MEMÓRIA EM GPGPU
+1. Registradores: Memória mais rápida, privada por thread.
+2. Memória Local: Extensão dos registradores, alta latência.
+3. Memória Compartilhada: Rápida, compartilhada por threads de um bloco.
+4. Memória Global: Grande capacidade, alta latência, acessível por todas as threads.
+5. Memória Constante: Somente leitura, cacheada, ideal para dados imutáveis.
+6. Memória de Textura: Cacheada, otimizada para localidade espacial.
+
+PRINCÍPIOS DE OTIMIZAÇÃO
+- Minimizar transferências CPU-GPU e maximizar uso de memórias rápidas.
+- Coalescer acessos à memória global e evitar divergência de warps.
+- Balancear ocupação e uso de recursos para maximizar eficiência dos SPs.
+
+CONCLUSÃO
+SPs são essenciais para a execução paralela em GPGPUs, e a hierarquia de memória é crucial para eficiência. Compreender e otimizar o uso de diferentes tipos de memória é vital para o desempenho de aplicações GPGPU.

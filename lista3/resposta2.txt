@@ -1,0 +1,110 @@
+Questão 2: Coerência de Cache e Esquemas de Coerência
+
+COERÊNCIA DE CACHE: DEFINIÇÃO
+
+Coerência de cache refere-se ao problema de manter a consistência dos dados quando existem múltiplas cópias locais (nos caches de diferentes processadores) de uma mesma variável ou região de memória. Em sistemas multiprocessados, quando vários processadores possuem cópias locais dos mesmos dados em seus caches, surge a necessidade de garantir que todas essas cópias sejam consistentes entre si e com o valor na memória principal.
+
+O problema da coerência ocorre quando um processador modifica o valor de uma variável em seu cache local. Se outros processadores possuem cópias dessa mesma variável em seus caches, essas cópias tornam-se desatualizadas (stale), podendo levar a comportamentos incorretos do programa.
+
+Um sistema de memória é considerado coerente se:
+1. Uma leitura por um processador P de um endereço X, que segue uma escrita pelo mesmo processador no endereço X (sem escritas intermediárias por outros processadores), sempre retorna o valor escrito por P.
+2. Uma leitura por um processador de um endereço X, que segue uma escrita por outro processador no endereço X, retorna o valor escrito se a leitura e a escrita estão suficientemente separadas no tempo e não existem outras escritas no endereço X.
+3. Escritas no mesmo endereço são serializadas, ou seja, duas escritas no mesmo endereço por quaisquer processadores são vistas na mesma ordem por todos os processadores.
+
+ESQUEMAS DE COERÊNCIA DE CACHE POR HARDWARE
+
+Os esquemas de coerência de cache por hardware implementam mecanismos diretamente no hardware para garantir a coerência, sem necessidade de intervenção do compilador ou do programador.
+
+Características dos esquemas de coerência por hardware:
+
+1. Protocolos baseados em snooping (monitoramento):
+   - Usados em sistemas com barramento compartilhado
+   - Cada controlador de cache monitora (snoop) o barramento para observar transações relacionadas a endereços presentes em seu cache
+   - Quando um processador detecta uma escrita em um endereço que possui em seu cache, toma ações apropriadas (invalidação ou atualização)
+   - Exemplos: Protocolos MSI, MESI, MOESI, MESIF
+
+2. Protocolos baseados em diretório:
+   - Usados em sistemas com redes de interconexão não baseadas em barramento
+   - Mantém um diretório centralizado ou distribuído que rastreia quais processadores têm cópias de cada bloco de memória
+   - Comunicação seletiva apenas com processadores relevantes
+   - Mais escalável para grande número de processadores
+
+3. Vantagens dos esquemas por hardware:
+   - Transparente para o software (compilador, sistema operacional e aplicação)
+   - Detecção e resolução automática de conflitos em tempo real
+   - Implementação eficiente em nível de hardware
+   - Não requer modificações no código-fonte ou compilação especial
+
+4. Desvantagens dos esquemas por hardware:
+   - Custo adicional em hardware (lógica, diretórios, barramentos)
+   - Sobrecarga no tráfego do barramento ou rede de interconexão
+   - Complexidade de implementação e verificação
+   - Potencial para degradação de desempenho devido ao tráfego de coerência
+
+ESQUEMAS DE COERÊNCIA DE CACHE POR SOFTWARE
+
+Os esquemas de coerência por software delegam a responsabilidade de manter a coerência para o compilador, o sistema operacional ou o programador, com suporte limitado do hardware.
+
+Características dos esquemas de coerência por software:
+
+1. Abordagens baseadas em compilador:
+   - O compilador analisa o código e insere instruções especiais para manter a coerência
+   - Identifica regiões de memória compartilhada e pontos de sincronização
+   - Insere instruções de flush (limpeza) ou invalidação de cache nos pontos apropriados
+   - Pode usar análise estática para minimizar o número de operações de coerência
+
+2. Abordagens baseadas em sistema operacional:
+   - O sistema operacional gerencia a coerência nas trocas de contexto ou em chamadas de sistema
+   - Páginas compartilhadas podem ser marcadas como não-cacheáveis
+   - Pode usar memória virtual para implementar coerência a nível de página
+
+3. Abordagens baseadas em programador:
+   - O programador insere explicitamente instruções de sincronização e manutenção de cache
+   - Usa primitivas como barreiras, locks e operações atômicas
+   - Exige conhecimento detalhado do modelo de memória do sistema
+
+4. Vantagens dos esquemas por software:
+   - Implementação mais simples do hardware
+   - Flexibilidade para otimizações específicas da aplicação
+   - Potencial para reduzir o tráfego de coerência quando o padrão de acesso é conhecido
+   - Pode ser mais eficiente em certos padrões de compartilhamento
+
+5. Desvantagens dos esquemas por software:
+   - Sobrecarga para o programador ou complexidade para o compilador
+   - Maior potencial para erros de programação ou compilação
+   - Geralmente menos eficiente que as soluções por hardware
+   - Pode requerer conhecimento detalhado da arquitetura do sistema
+
+DIFERENÇAS PRINCIPAIS ENTRE ESQUEMAS DE COERÊNCIA POR SOFTWARE E POR HARDWARE
+
+1. Nível de implementação:
+   - Hardware: Implementado no controlador de cache e protocolos de barramento ou interconexão
+   - Software: Implementado no compilador, sistema operacional ou código da aplicação
+
+2. Transparência:
+   - Hardware: Completamente transparente para o software
+   - Software: Requer consideração explícita na programação ou compilação
+
+3. Granularidade:
+   - Hardware: Geralmente opera na granularidade de linha de cache (32-128 bytes)
+   - Software: Pode operar em granularidade variável, desde palavras até páginas inteiras
+
+4. Desempenho:
+   - Hardware: Maior desempenho para padrões de compartilhamento gerais
+   - Software: Pode ser otimizado para padrões específicos, mas geralmente mais lento
+
+5. Escalabilidade:
+   - Hardware: Limitações de escalabilidade, especialmente em protocolos baseados em snooping
+   - Software: Potencialmente mais escalável, mas com sobrecarga de desempenho
+
+6. Flexibilidade:
+   - Hardware: Comportamento fixo definido pelo protocolo implementado
+   - Software: Adaptável a diferentes padrões de acesso e requisitos da aplicação
+
+7. Sobrecarga:
+   - Hardware: Sobrecarga constante em termos de tráfego de barramento e latência
+   - Software: Sobrecarga variável, dependendo da eficácia da análise e otimização
+
+CONCLUSÃO
+
+A escolha entre esquemas de coerência por hardware ou software depende de diversos fatores, incluindo a escala do sistema, os requisitos de desempenho, o padrão de compartilhamento de dados e o modelo de programação. Sistemas modernos geralmente empregam soluções híbridas, com suporte de hardware básico complementado por otimizações em software para casos específicos. Em geral, o hardware fornece a coerência básica de forma transparente, enquanto o software pode fornecer informações para otimizar o comportamento em casos conhecidos de compartilhamento. 

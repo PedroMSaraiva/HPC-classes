@@ -1,0 +1,18 @@
+Exercícios:
+1.Quais  são  as  principais  características  de  um  MultiProcessador  Simétrico  (SMP)?Cite e explique algumas vantagens potenciais de um SMP em comparação com um uniprocessador?
+
+2.O que significa coerência de cache? Qual é a diferença entre esquemas de coerência de cache por software e por hardware?
+
+3.O que são clusters? Quais são alguns dos principais benefícios dos clusters?
+
+4.Quais são as diferenças entre UMA, NUMA e CC-NUMA?
+
+5.Apresente  a  classificação  de  Flynn,  descrevendo  cada  um  dos  quatro  tipos  de arquiteturas considerando fluxo(s) de intrução(ões) e fluxo(s) de dado(s).
+
+6.Faça uma comparação entre máquinas paralelas com memória compartilhada e com memória distribuída. Cite vantagens e desvantagens de cada uma.
+
+7.Defina as etapas da metodologia de projetos de algoritmos paralelos definida por Ian Foster.
+
+8.Comente como a etapa de particionamento pode ser realizada usando decomposição funcional  (paralelismo  de  tarefas)  e  decomposição  de  domínio  (paralelismo  de dados).
+
+9.Proponha   soluções   paralelas   para   o   cálculo   da   seguinte   expressão   vetorial:           (X/k –Y*j*g+Z*g*h),  onde k, j, ge hsão  constantes  e X, Ye Zsão  vetores  de tamanho m.  Apresente  uma  solução eficiente explorando  paralelismo  de  tarefas  e outra usando paralelismo de dados.

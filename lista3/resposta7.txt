@@ -1,0 +1,150 @@
+Questão 7: Etapas da Metodologia de Projetos de Algoritmos Paralelos de Ian Foster
+
+Ian Foster propôs uma metodologia sistemática para o desenvolvimento de algoritmos paralelos, conhecida como "Design Methodology for Parallel Algorithms" ou comumente chamada de metodologia PCAM (Partitioning, Communication, Agglomeration, Mapping). Esta abordagem estruturada divide o processo de desenvolvimento em quatro etapas principais, fornecendo um framework para transformar um problema computacional em uma solução paralela eficiente.
+
+ETAPA 1: PARTICIONAMENTO (PARTITIONING)
+
+O objetivo desta etapa é dividir o problema em unidades menores de computação (tarefas), expondo o máximo de paralelismo possível.
+
+Características principais:
+- Identificação da computação básica e dados a serem manipulados
+- Decomposição do problema em tarefas menores e independentes
+- Foco na maximização do número de tarefas para expor o máximo de paralelismo potencial
+- Não se preocupa com o número de processadores disponíveis nesta etapa
+
+Tipos de particionamento:
+1. Decomposição de domínio (domain decomposition):
+   - Foco na divisão do conjunto de dados em partições
+   - Aplicação do mesmo cálculo em diferentes subconjuntos dos dados
+   - Exemplo: dividir uma matriz em blocos menores para processamento
+   - Adequado para problemas com paralelismo de dados
+
+2. Decomposição funcional (functional decomposition):
+   - Foco na divisão do cálculo em diferentes operações
+   - Cada tarefa executa um tipo diferente de operação
+   - Exemplo: pipeline de processamento de imagens com etapas de filtragem, segmentação e classificação
+   - Adequado para problemas com paralelismo de tarefas
+
+Objetivos do particionamento:
+- Identificar pelo menos uma ordem de grandeza mais tarefas do que processadores disponíveis
+- Evitar redundância de cálculos
+- Balancear o tamanho e a quantidade de tarefas
+- Escalar o número de tarefas com o tamanho do problema
+
+ETAPA 2: COMUNICAÇÃO (COMMUNICATION)
+
+Nesta etapa, determina-se como as tarefas identificadas na etapa anterior se comunicam e se coordenam, estabelecendo os padrões de comunicação necessários para o fluxo de dados entre elas.
+
+Características principais:
+- Identificação das necessidades de comunicação entre tarefas
+- Determinação dos dados que precisam ser trocados
+- Definição dos padrões de comunicação (local vs. global, síncrona vs. assíncrona)
+- Especificação das estruturas de comunicação (canais, topologias)
+
+Tipos de comunicação:
+1. Comunicação local:
+   - Troca de dados entre tarefas "vizinhas" ou relacionadas
+   - Geralmente mais eficiente e escalável
+   - Exemplo: comunicação de bordas em decomposição de domínio para stencil computations
+
+2. Comunicação global:
+   - Envolve múltiplas ou todas as tarefas
+   - Exemplo: operações de redução, broadcast, gather/scatter
+   - Potencialmente mais custosas e limitantes para escalabilidade
+
+Objetivos da comunicação:
+- Minimizar o volume de comunicação
+- Balancear a comunicação entre tarefas
+- Minimizar a contenção por recursos de comunicação
+- Permitir sobreposição de comunicação com computação quando possível
+- Reduzir a latência de operações de sincronização
+
+ETAPA 3: AGLOMERAÇÃO (AGGLOMERATION)
+
+Esta etapa consiste em combinar tarefas identificadas nas etapas anteriores em unidades maiores, considerando aspectos de desempenho e características da plataforma de execução.
+
+Características principais:
+- Combinação de tarefas pequenas em tarefas maiores (grão mais grosso)
+- Redução do número de tarefas para aproximar-se do número de processadores disponíveis
+- Consideração do custo de comunicação e overhead de criação/gerenciamento de tarefas
+- Aumentar a localidade de dados dentro de cada tarefa
+
+Fatores considerados na aglomeração:
+1. Redução do overhead de comunicação:
+   - Reduzir o número de mensagens
+   - Aumentar o tamanho das mensagens (amortização do custo fixo de comunicação)
+   - Minimizar a superfície de comunicação entre grupos de tarefas
+
+2. Manutenção da escalabilidade:
+   - Preservar o paralelismo suficiente para explorar os recursos disponíveis
+   - Permitir balanceamento de carga eficiente
+   - Manter flexibilidade para diferentes plataformas de hardware
+
+3. Redução de overhead de gerenciamento:
+   - Diminuir o número de tarefas para gerenciar
+   - Reduzir switches de contexto e criação/destruição de threads
+
+Objetivos da aglomeração:
+- Encontrar o equilíbrio entre paralelismo e overhead
+- Aumentar a granularidade das tarefas para melhorar o desempenho
+- Preservar a flexibilidade e portabilidade para diferentes plataformas
+- Manter o potencial de escalabilidade para problemas maiores
+
+ETAPA 4: MAPEAMENTO (MAPPING)
+
+A etapa final consiste em atribuir as tarefas aglomeradas aos processadores reais, considerando a topologia da máquina e buscando maximizar a utilização dos recursos e minimizar a comunicação entre processadores.
+
+Características principais:
+- Atribuição de tarefas específicas a processadores específicos
+- Consideração da topologia da máquina real e suas características
+- Busca pela minimização do custo total de comunicação
+- Balanceamento de carga entre os processadores
+
+Estratégias de mapeamento:
+1. Estático:
+   - Atribuição fixa de tarefas a processadores no início da execução
+   - Menor overhead de gerenciamento
+   - Requer previsibilidade no comportamento das tarefas
+
+2. Dinâmico:
+   - Atribuição de tarefas durante a execução com base na carga atual
+   - Mais adaptável a variações no desempenho ou no tamanho das tarefas
+   - Maior overhead de gerenciamento, mas potencialmente melhor balanceamento
+
+Técnicas de mapeamento:
+- Afinidade processador-dados: colocar tarefas próximas aos dados que manipulam
+- Agrupamento de tarefas comunicantes: minimizar comunicação inter-processador
+- Divisão cíclica (round-robin): distribuição simples para tarefas homogêneas
+- Filas de trabalho dinâmicas: para tarefas de tamanho variável ou imprevisível
+
+Objetivos do mapeamento:
+- Maximizar a utilização dos processadores
+- Minimizar a comunicação inter-processador
+- Balancear a carga computacional
+- Considerar características específicas da arquitetura (memória hierárquica, topologia)
+
+CONSIDERAÇÕES GERAIS E INTERAÇÃO ENTRE AS ETAPAS
+
+A metodologia de Foster não é estritamente linear; frequentemente exige iterações e refinamento:
+
+1. Interação Particionamento-Comunicação:
+   - O esquema de particionamento afeta diretamente os padrões de comunicação
+   - Diferentes decomposições resultam em diferentes requisitos de comunicação
+
+2. Interação Comunicação-Aglomeração:
+   - A aglomeração busca reduzir a comunicação entre tarefas
+   - Padrões de comunicação influenciam como as tarefas devem ser aglomeradas
+
+3. Interação Aglomeração-Mapeamento:
+   - A granularidade das tarefas aglomeradas afeta as opções de mapeamento
+   - O mapeamento pode requerer ajustes na aglomeração para melhor desempenho
+
+4. Ciclo de refinamento:
+   - Métricas de desempenho podem exigir revisão das decisões anteriores
+   - Experimentos e medições informam ajustes nas quatro etapas
+
+CONCLUSÃO
+
+A metodologia de Foster fornece um framework sistemático e estruturado para o desenvolvimento de algoritmos paralelos eficientes. Começando com uma granularidade fina para expor o máximo de paralelismo possível, a metodologia progride para decisões mais práticas sobre comunicação, granularidade e mapeamento, culminando em uma implementação paralela eficiente.
+
+Esta abordagem equilibra considerações teóricas (como maximizar o paralelismo) com considerações práticas (como overhead de comunicação e balanceamento de carga), resultando em algoritmos paralelos que podem ser eficientemente implementados em uma variedade de arquiteturas paralelas. A natureza sistemática da metodologia a torna particularmente valiosa para o desenvolvimento de software paralelo complexo e de grande escala. 

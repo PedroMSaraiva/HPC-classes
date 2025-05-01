@@ -1,0 +1,131 @@
+RESUMO LISTA 3 - ARQUITETURAS PARALELAS
+
+Q1: MULTIPROCESSADORES SIMÉTRICOS (SMP)
+• Características:
+  - Processadores idênticos com memória compartilhada
+  - Acesso uniforme à memória (UMA)
+  - Sistema operacional único
+  - Escalabilidade limitada (2-32 processadores)
+• Vantagens vs. Uniprocessadores:
+  - Maior desempenho e throughput
+  - Compartilhamento eficiente de recursos
+  - Escalabilidade incremental
+  - Alta disponibilidade
+  - Menor latência de comunicação
+  - Programação mais simples que sistemas distribuídos
+
+Q2: COERÊNCIA DE CACHE
+• Definição: Manter consistência de dados quando múltiplos processadores têm cópias em caches locais
+• Esquemas por Hardware:
+  - Protocolos baseados em snooping (MSI, MESI)
+  - Protocolos baseados em diretório
+  - Transparente para software
+  - Detecção/resolução automática de conflitos
+• Esquemas por Software:
+  - Abordagens baseadas em compilador
+  - Abordagens baseadas em sistema operacional
+  - Abordagens baseadas em programador
+• Diferenças:
+  - Hardware: transparente, melhor desempenho geral, granularidade de linha de cache
+  - Software: requer consideração explícita, potencialmente mais escalável, mais flexível
+
+Q3: CLUSTERS
+• Definição: Sistema de computação com nós independentes interconectados
+• Benefícios:
+  - Custo-benefício superior (hardware commodity)
+  - Escalabilidade horizontal quase linear
+  - Alta disponibilidade e tolerância a falhas
+  - Balanceamento de carga eficiente
+  - Flexibilidade e adaptabilidade
+  - Poder computacional agregado
+  - Facilidade de manutenção
+  - Acesso a recursos distribuídos
+
+Q4: ARQUITETURAS DE MEMÓRIA
+• UMA (Uniform Memory Access):
+  - Tempo de acesso uniforme para todos os processadores
+  - Escalabilidade limitada
+  - Modelo de programação simples
+  - Típico em SMPs tradicionais
+• NUMA (Non-Uniform Memory Access):
+  - Tempo de acesso varia com distância entre processador e memória
+  - Maior escalabilidade
+  - Programação mais complexa
+  - Melhor para aplicações com boa localidade
+• CC-NUMA (Cache Coherent NUMA):
+  - NUMA com protocolo de coerência em hardware
+  - Compromisso entre escalabilidade e facilidade de programação
+  - Modelo simplificado comparado ao NUMA puro
+  - Padrão em servidores empresariais modernos
+
+Q5: CLASSIFICAÇÃO DE FLYNN
+• SISD (Single Instruction, Single Data):
+  - Um fluxo de instruções, um fluxo de dados
+  - Computadores Von Neumann tradicionais
+  - Sem paralelismo explícito
+• SIMD (Single Instruction, Multiple Data):
+  - Um fluxo de instruções, múltiplos fluxos de dados
+  - Extensões vetoriais, GPUs (parcialmente)
+  - Paralelismo de dados
+  - Ideal para operações regulares em grandes conjuntos
+• MISD (Multiple Instruction, Single Data):
+  - Múltiplos fluxos de instruções, um fluxo de dados
+  - Raros exemplos práticos
+  - Sistemas tolerantes a falhas
+• MIMD (Multiple Instruction, Multiple Data):
+  - Múltiplos fluxos de instruções, múltiplos fluxos de dados
+  - Multiprocessadores, clusters, sistemas distribuídos
+  - Maior flexibilidade
+  - Suporta paralelismo de dados e tarefas
+• Extensões: SPMD, arquiteturas híbridas
+• Arquiteturas modernas frequentemente combinam elementos
+
+Q6: ARQUITETURAS DE MEMÓRIA COMPARTILHADA VS. DISTRIBUÍDA
+• Memória Compartilhada:
+  - Vantagens: programação intuitiva, compartilhamento fácil, balanceamento dinâmico
+  - Desvantagens: escalabilidade limitada, sincronização complexa, coerência de cache
+• Memória Distribuída:
+  - Vantagens: escalabilidade superior, custo-benefício, localidade explícita, tolerância a falhas
+  - Desvantagens: programação complexa, sobrecarga de comunicação, duplicação de dados
+• Comparação:
+  - Modelo: threads/variáveis compartilhadas vs. processos/mensagens
+  - Escalabilidade: limitada vs. superior
+  - Granularidade: fina vs. grossa
+  - Tolerância a falhas: limitada vs. melhor
+• Arquiteturas híbridas combinam características das duas abordagens
+
+Q7: METODOLOGIA DE FOSTER (PCAM)
+• Etapa 1: Particionamento
+  - Dividir problema em tarefas menores
+  - Decomposição de domínio ou funcional
+  - Maximizar paralelismo potencial
+• Etapa 2: Comunicação
+  - Determinar padrões de comunicação
+  - Comunicação local vs. global
+  - Minimizar volume e latência
+• Etapa 3: Aglomeração
+  - Combinar tarefas em unidades maiores
+  - Reduzir overhead de comunicação
+  - Equilibrar paralelismo e overhead
+• Etapa 4: Mapeamento
+  - Atribuir tarefas a processadores
+  - Considerar topologia da máquina
+  - Minimizar comunicação inter-processador
+• Interação entre etapas, iteração e refinamento
+
+Q8: PARTICIONAMENTO (DECOMPOSIÇÃO)
+• Decomposição Funcional (paralelismo de tarefas):
+  - Divisão baseada em operações/funções
+  - Técnicas: pipeline, mestre-escravo, especialização
+  - Vantagens: adequada para problemas heterogêneos, hardware especializado
+  - Limitações: dependências entre funções, coordenação complexa
+• Decomposição de Domínio (paralelismo de dados):
+  - Divisão baseada em dados
+  - Técnicas: blocos, cíclico, adaptativo, geométrico
+  - Vantagens: paralelismo massivo, escalabilidade, programação simples
+  - Limitações: sincronização frequente, comunicação nas fronteiras
+• Abordagens Híbridas:
+  - Hierarquia de paralelismo
+  - Paralelismo aninhado
+  - Adaptação à hierarquia de hardware
+• Escolha baseada em: natureza do problema, arquitetura, requisitos de desempenho 
