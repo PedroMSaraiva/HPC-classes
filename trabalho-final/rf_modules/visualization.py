@@ -852,4 +852,160 @@ class Visualizer:
         self._create_html_index()
         
         logger.success(f"Visualizações organizadas em: {self.run_dir}")
-        logger.success(f"Acesse os resultados em HTML: {self.plots_base_dir}/index.html") 
+        logger.success(f"Acesse os resultados em HTML: {self.plots_base_dir}/index.html")
+
+    def plot_fitness_evolution(self, fitness_history, dataset_name, save_dir):
+        """
+        Plota a evolução do fitness durante a seleção de instâncias
+        
+        Args:
+            fitness_history (array): Histórico de fitness
+            dataset_name (str): Nome do dataset
+            save_dir (Path): Diretório para salvar o gráfico
+        """
+        try:
+            plt.figure(figsize=(12, 8))
+            generations = range(1, len(fitness_history) + 1)
+            
+            plt.plot(generations, fitness_history, 'b-', linewidth=2)
+            plt.scatter(generations, fitness_history, c='blue', alpha=0.5)
+            
+            plt.title(f'Evolução do Fitness - {dataset_name}', fontsize=16)
+            plt.xlabel('Geração', fontsize=14)
+            plt.ylabel('Fitness', fontsize=14)
+            plt.grid(True, alpha=0.3)
+            
+            # Adiciona informações sobre melhor fitness
+            best_fitness = max(fitness_history)
+            best_gen = fitness_history.index(best_fitness) + 1
+            plt.axhline(y=best_fitness, color='r', linestyle='--', alpha=0.5)
+            plt.text(0.02, 0.98, f'Melhor Fitness: {best_fitness:.4f}\nGeração: {best_gen}',
+                    transform=plt.gca().transAxes, bbox=dict(facecolor='white', alpha=0.8))
+            
+            # Salva o gráfico
+            save_path = Path(save_dir) / f"fitness_evolution_{dataset_name.replace('/', '_')}.png"
+            plt.savefig(save_path, dpi=300, bbox_inches='tight')
+            plt.close()
+            
+            logger.debug(f"Gráfico de evolução do fitness salvo em {save_path}")
+            
+        except Exception as e:
+            logger.error(f"Erro ao plotar evolução do fitness: {str(e)}")
+            if plt:
+                plt.close()
+    
+    def plot_parallel_fitness_evolution(self, fitness_history, dataset_name, save_dir):
+        """
+        Plota a evolução do fitness para múltiplas execuções paralelas
+        
+        Args:
+            fitness_history (list): Lista com os valores de fitness de cada execução
+            dataset_name (str): Nome do dataset
+            save_dir (Path): Diretório para salvar o gráfico
+        """
+        try:
+            plt.figure(figsize=(12, 8))
+            
+            # Plota o fitness de cada execução
+            for i, fitness in enumerate(fitness_history):
+                plt.scatter(i+1, fitness, c='blue', alpha=0.6, s=100)
+            
+            plt.axhline(y=max(fitness_history), color='r', linestyle='--', 
+                       label=f'Melhor Fitness: {max(fitness_history):.4f}')
+            
+            plt.title(f'Fitness por Execução Paralela - {dataset_name}', fontsize=16)
+            plt.xlabel('Execução', fontsize=14)
+            plt.ylabel('Fitness', fontsize=14)
+            plt.grid(True, alpha=0.3)
+            plt.legend()
+            
+            # Salva o gráfico
+            save_path = save_dir / f"parallel_fitness_{self._safe_filename(dataset_name)}.png"
+            self._save_plot(plt, [save_path])
+            plt.close()
+            
+        except Exception as e:
+            logger.error(f"Erro ao plotar evolução do fitness paralelo: {str(e)}")
+            
+    def plot_accuracy_comparison(self, results, dataset_name, save_dir):
+        """
+        Plota comparação entre acurácias original e com seleção
+        
+        Args:
+            results (dict): Dicionário com os resultados
+            dataset_name (str): Nome do dataset
+            save_dir (Path): Diretório para salvar o gráfico
+        """
+        try:
+            plt.figure(figsize=(10, 6))
+            
+            # Dados para o gráfico
+            accuracies = [results['original_accuracy'], results['selected_accuracy']]
+            labels = ['Dataset Original', 'Dataset Reduzido']
+            
+            # Cria barras
+            bars = plt.bar(labels, accuracies, color=['lightblue', 'lightgreen'])
+            
+            # Adiciona valores sobre as barras
+            for bar in bars:
+                height = bar.get_height()
+                plt.text(bar.get_x() + bar.get_width()/2., height,
+                        f'{height:.4f}',
+                        ha='center', va='bottom')
+            
+            plt.title(f'Comparação de Acurácia - {dataset_name}', fontsize=16)
+            plt.ylabel('Acurácia', fontsize=14)
+            plt.grid(True, alpha=0.3)
+            
+            # Adiciona informação sobre redução
+            plt.figtext(0.02, 0.02, 
+                       f'Redução de instâncias: {results["reduction_rate"]:.2f}%',
+                       fontsize=10)
+            
+            # Salva o gráfico
+            save_path = save_dir / f"accuracy_comparison_{self._safe_filename(dataset_name)}.png"
+            self._save_plot(plt, [save_path])
+            plt.close()
+            
+        except Exception as e:
+            logger.error(f"Erro ao plotar comparação de acurácias: {str(e)}")
+            
+    def plot_overall_comparison(self, results_df, save_dir):
+        """
+        Plota comparação geral entre todos os datasets
+        
+        Args:
+            results_df (DataFrame): DataFrame com os resultados
+            save_dir (Path): Diretório para salvar o gráfico
+        """
+        try:
+            plt.figure(figsize=(15, 10))
+            
+            # Prepara dados para o gráfico
+            datasets = results_df['dataset_name']
+            x = np.arange(len(datasets))
+            width = 0.35
+            
+            # Cria barras
+            plt.bar(x - width/2, results_df['original_accuracy'], 
+                   width, label='Original', color='lightblue')
+            plt.bar(x + width/2, results_df['selected_accuracy'], 
+                   width, label='Reduzido', color='lightgreen')
+            
+            plt.title('Comparação de Acurácia por Dataset', fontsize=16)
+            plt.xlabel('Dataset', fontsize=14)
+            plt.ylabel('Acurácia', fontsize=14)
+            plt.xticks(x, datasets, rotation=45, ha='right')
+            plt.legend()
+            plt.grid(True, alpha=0.3)
+            
+            # Ajusta layout
+            plt.tight_layout()
+            
+            # Salva o gráfico
+            save_path = save_dir / "overall_comparison.png"
+            self._save_plot(plt, [save_path])
+            plt.close()
+            
+        except Exception as e:
+            logger.error(f"Erro ao plotar comparação geral: {str(e)}") 
