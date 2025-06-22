@@ -54,7 +54,7 @@ class DataLoader:
         logger.debug(f"Tentando carregar {file_path}")
         try:
             # Tenta delimitador vírgula primeiro
-            df = pd.read_csv(file_path, index_col=0)
+            df = pd.read_csv(file_path)
             logger.debug(f"Arquivo carregado com delimitador vírgula: {file_path}")
             return df
         except:
@@ -122,10 +122,7 @@ class DataLoader:
             if col.lower() in potential_targets:
                 target_col = col
                 break
-        
-        # Se nenhuma correspondência for encontrada, usa a última coluna
-        if target_col is None:
-            target_col = df.columns[0]
+       
         
         logger.debug(f"Coluna alvo identificada: {target_col}")
         

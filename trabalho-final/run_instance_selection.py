@@ -57,7 +57,7 @@ def process_dataset_with_instance_selection(file_path, data_loader):
             return None
             
         X, y, target_col, task_type = data_loader.preprocess_dataset(df)
-        logger.info(f"teste:{ target_col}")
+   
         if X is None or task_type != 'classificação':
             return None
             
