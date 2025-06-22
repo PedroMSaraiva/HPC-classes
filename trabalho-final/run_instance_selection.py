@@ -119,7 +119,7 @@ def main():
             results[0]['X'].reset_index(drop=True)
             ], axis=1)
         numero = random.randint(1, 1000)
-        results_file = INSTANCE_SEL_DIR / f"parallel_instance_selection_results_{numero}.csv"
+        results_file = INSTANCE_SEL_DIR / f"instance_selection_results_{numero}.csv"
         df_results.to_csv(results_file, index=False)
         logger.success(f"Resultados salvos em {results_file}")
         
