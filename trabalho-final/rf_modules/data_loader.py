@@ -54,7 +54,7 @@ class DataLoader:
         logger.debug(f"Tentando carregar {file_path}")
         try:
             # Tenta delimitador vírgula primeiro
-            df = pd.read_csv(file_path)
+            df = pd.read_csv(file_path, index_col=0)
             logger.debug(f"Arquivo carregado com delimitador vírgula: {file_path}")
             return df
         except:
@@ -125,7 +125,7 @@ class DataLoader:
         
         # Se nenhuma correspondência for encontrada, usa a última coluna
         if target_col is None:
-            target_col = df.columns[-1]
+            target_col = df.columns[0]
         
         logger.debug(f"Coluna alvo identificada: {target_col}")
         
@@ -136,30 +136,16 @@ class DataLoader:
         # Padroniza as features
         scaler = StandardScaler()
         X_scaled = pd.DataFrame(scaler.fit_transform(X), columns=X.columns)
-        
-        # Identifica se é uma tarefa de classificação ou regressão
+       
         if len(y.unique()) < 10 or pd.api.types.is_categorical_dtype(y):
             task_type = 'classificação'
             # Codifica o alvo se for categórico
             if not pd.api.types.is_numeric_dtype(y):
                 y = le.fit_transform(y.astype(str))
         else:
-            task_type = 'regressão'
+            task_type = 'classificação'
         
         logger.debug(f"Tipo de tarefa identificado: {task_type}")
         return X_scaled, y, target_col, task_type
         
-    def split_data(self, X, y, test_size=0.3, random_state=42):
-        """
-        Divide os dados em conjuntos de treino e teste
-        
-        Args:
-            X: Features
-            y: Alvo
-            test_size (float): Proporção do conjunto de teste
-            random_state (int): Semente aleatória
-            
-        Returns:
-            tuple: (X_train, X_test, y_train, y_test)
-        """
-        return train_test_split(X, y, test_size=test_size, random_state=random_state) 
+   

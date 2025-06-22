@@ -157,7 +157,7 @@ class InstanceSelector:
             logger.info(f"Redução do dataset: {reduction_rate:.2f}%")
             logger.info(f"Instâncias originais: {len(X)}, Instâncias selecionadas: {len(X_selected)}")
             
-            return X_selected, y_selected, selected_indices, ga_instance.best_solutions_fitness
+            return X_selected, y_selected
             
         except Exception as e:
             logger.error(f"Erro na seleção de instâncias: {str(e)}")
