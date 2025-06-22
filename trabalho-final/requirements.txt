@@ -1,0 +1,23 @@
+# Dependências principais
+numpy>=1.21.0
+pandas>=1.3.0
+scikit-learn>=1.0.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# Algoritmos genéticos
+pygad>=3.0.0
+
+# Monitoramento de sistema
+psutil>=5.8.0
+
+# Processamento paralelo (já incluído no Python 3.8+)
+# multiprocessing - built-in
+
+# Utilitários
+pathlib2>=2.3.0; python_version < "3.4"
+
+# Para desenvolvimento e testes (opcional)
+jupyter>=1.0.0
+ipykernel>=6.0.0
+pytest>=6.0.0 

@@ -122,7 +122,11 @@ class DataLoader:
             if col.lower() in potential_targets:
                 target_col = col
                 break
-       
+        
+        # Se não encontrou uma coluna alvo específica, usa a última coluna como padrão
+        if target_col is None:
+            target_col = df.columns[-1]
+            logger.debug(f"Usando última coluna como alvo: {target_col}")
         
         logger.debug(f"Coluna alvo identificada: {target_col}")
         
