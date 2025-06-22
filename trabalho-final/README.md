@@ -20,14 +20,14 @@ Este projeto expande o sistema modular original de análise com Random Forest ao
 
 ```
 trabalho-final/
-├── run_random_forest.py                    # Script original de execução geral
 ├── run_instance_selection.py              # Versão com AG sequencial
 ├── run_parallel_instance_selection.py     # Versão com AG paralelo (Joblib)
 ├── rf_modules/
 │   ├── instance_selector.py               # Seleção de instâncias com PyGAD
 │   ├── parallel_instance_selector.py      # Seleção paralela com Joblib
 │   ├── model.py                           # RandomForestModel e abstração de treino
-│   └── ...                              # Outros módulos (data_loader, logger, etc.)
+│   └── ...                                # Outros módulos (data_loader, logger, etc.)
+├── docs                                   # Documentação
 ├── dataset/                               # Datasets de entrada
 ├── results/
 │   ├── instance_selection/                # Resultados do AG tradicional
