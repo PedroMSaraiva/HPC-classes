@@ -1,0 +1,3 @@
+algorithm,execution_time_mean,execution_time_std,execution_time_min,execution_time_max,reduction_rate_mean,reduction_rate_std,reduction_rate_min,reduction_rate_max,original_instances_mean,original_instances_std,reduced_instances_mean,reduced_instances_std
+Parallel_GA,5.7982,4.8886,1.4624,17.916,55.988,4.3843,51.4596,64.918,1974.9412,1695.3985,914.9412,811.2445
+Sequential_GA,235.8202,15.3161,216.6416,263.7924,53.618,3.5973,49.7007,62.8571,1974.9412,1695.3985,948.8824,833.4929
